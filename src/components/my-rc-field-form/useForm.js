@@ -10,6 +10,7 @@ class FormStore {
   };
 
   getFieldValue = (name) => {
+    console.log(name, this.state, "--this.state[name]", this.state[name]);
     return this.state[name];
   };
 
@@ -18,11 +19,26 @@ class FormStore {
   };
 
   setFieldsValue = (newStore) => {
-    this.store = { ...this.state, ...newStore };
+    console.log(this.state, "new->", newStore);
+
+    this.state = {
+      ...this.state,
+      ...newStore,
+    };
+
     this.fieldEntities.forEach((enetity) => {
-      enetity.onStoreChange();
+      console.log("enetity", enetity, newStore);
+      const { name } = enetity.props;
+      Object.keys(newStore).forEach((key) => {
+        console.log("key", key);
+
+        if (key === name) {
+          enetity.onStoreChange();
+        }
+      });
     });
-    console.log("this.store", this.store);
+
+    console.log("setFieldsValue---最后--this.store", this.store);
   };
 
   /* 	validateFields= callback => {
